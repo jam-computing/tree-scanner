@@ -1,33 +1,27 @@
 import asyncio
-from webeockets.sync.client import connect
-import cv2 as cv
+from websockets.sync.client import connect
+#import cv2 as cv
 
 def main():
-    pass
-
-class data:
-    def __init__(self, port, path, led_count):
-        self.port = port
-        self.path = path
-        self.led_count = led_count
+    get_data()
 
 def get_data():
     print('----- Scanner Client -----')
-    print('Welcome to the client of the scanner.\nEnsure the server is started. Please fill in the following options. Leaving them blank fills a default value')
-
-
-    
+    print('Welcome to the client of the scanner.\nEnsure the server is started.\nPlease fill in the following options. Leaving them blank fills in a default value')
+    led_count = get_field('How many leds? ', int, 50)
+    port = get_field('Which port? ', int, 8765)
+    path = get_field('What is the path? ', str, '')
 
 def get_field(question, parser, default):
+    print(question)
     while True:
         value = input()
         if value == '':
             return default
         try:
             return parser(value)
-        except:
+        except ValueError:
             print('Data invalid, try again')
    
-
 if __name__ == '__main__':
     main()
