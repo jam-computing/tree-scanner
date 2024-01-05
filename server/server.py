@@ -1,9 +1,16 @@
 import asyncio
 from websockets.server import serve
-import re
+import board
+import neopixel
 
+# Connection variables
 path = 'localhost'
 port = 8765
+
+# Led variables
+board_pin = Board.D18
+led_count = 50
+led_manager = None
 
 async def handle_request(websocket):
     for message in websocket:
@@ -15,11 +22,14 @@ def handle_message(websocket, message):
         print('Wipe update at index : ' + index)
         wipe_update(int(message))
         websocket.send('Request processed')
-    elif re.match(message, r'Setup Leds: \d+'):
+    elif message == 'setup':
         led_count = int(message[:11])
         print(f'Setting up {led_count} leds')
         setup_ws281x(led_count)
         websocket.send('Setup complete')
+    elif message == 'data':
+        print('Data request')
+        websocket.send(f'Path: {path}, Port: {port}, Leds: {led_count}')
     elif message == 'ping':
         print('Ping request')
         websocket.send('pong')
@@ -31,11 +41,27 @@ async def main():
     async with serve(handle_request, path, port):
         await asyncio.Future()  # run forever
 
-asyncio.run(main())
+def get_field(question, parser, default):
+    print(question)
+    while True:
+        value = input()
+        if value == '':
+            return default
+        try:
+            return parser(value)
+        except ValueError:
+            print('Data invalid, try again')
 
-def wipe_update(websocket, index):
-    pass
+def get_data():
+    print('Before the server can start, please fill in the following data. Leaving the field blank will use a default')
 
+    
+   
 def setup_ws281x():
     pass
 
+if __name__ == '__main__':
+    print('----- Scanner Server -----')
+
+
+    asyncio.run(main())

@@ -1,6 +1,6 @@
 import asyncio
 from websockets.sync.client import connect
-#import cv2 as cv
+# import cv2 as cv
 
 def main():
     get_data()
