@@ -3,15 +3,6 @@ from websockets.server import serve
 import board
 import neopixel
 
-# Connection variables
-path = 'localhost'
-port = 8765
-
-# Led variables
-board_pin = Board.D18
-led_count = 50
-led_manager = None
-
 async def handle_request(websocket):
     for message in websocket:
         handle_message(websocket, message)
