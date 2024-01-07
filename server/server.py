@@ -53,6 +53,4 @@ def setup_ws281x():
 
 if __name__ == '__main__':
     print('----- Scanner Server -----')
-
-
     asyncio.run(main())

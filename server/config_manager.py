@@ -4,6 +4,7 @@ class ConfigManager:
     def __init__(self, path):
         self.file = open(path)
         self.text = self.file.read()
+        print(repr(self.text))
 
     def get_field(self, field_name, parser):
         # A field declaration is as follows

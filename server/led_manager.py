@@ -25,19 +25,21 @@ class LedManager:
     @staticmethod
     def parse_pin(string):
         # NeoPixels must be connected to D10, D12, D18 or D21 to work.
-        pin = re.match(r'D(\d+)', string)
+        pins = re.findall(r'D\d+', string)
 
-        if pin is None:
-            raise ValueError('The field was not assigned correctly or at all')
+        if len(pins) > 1:
+            raise ValueError('The field was assigned multiple times')
+        if len(pins) < 1:
+            raise ValueError('The field was not assigned')
 
-        match pin.group(0):
-            case '10':
+        match pins[0]:
+            case 'D10':
                 return board.D10
-            case '12':
+            case 'D12':
                 return board.D12
-            case '18':
+            case 'D18':
                 return board.D18
-            case '21':
+            case 'D21':
                 return board.D21
             case _:
                 raise ValueError('NeoPixels must be connected to D10, D12, D18 or D21 to work')
