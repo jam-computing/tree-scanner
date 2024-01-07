@@ -2,6 +2,8 @@ import asyncio
 from websockets.server import serve
 import board
 import neopixel
+from config_manager import ConfigManager
+from led_manager import LedManager
 
 async def handle_request(websocket):
     for message in websocket:
@@ -43,8 +45,9 @@ def get_field(question, parser, default):
         except ValueError:
             print('Data invalid, try again')
 
-def get_data():
-    print('Before the server can start, please fill in the following data. Leaving the field blank will use a default')
+def read_in():
+    print('Reading data from config')
+    config = 
 
     
    

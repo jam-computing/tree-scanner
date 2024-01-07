@@ -6,16 +6,14 @@ class ConfigManager:
         self.text = self.file.read()
         print(repr(self.text))
 
-    def get_field(self, field_name, parser):
-        # A field declaration is as follows
-        # - The start of the line
-        # - The field name
-        # - 0 or 1 spaces
-        # - An equals sign
-        # - 0 or 1 spaces
-        # - 1 or more charachters
-        # - The end of the line
-        matches = re.findall(r"\n" + field_name + r" ?= ?(.+)\n", self.text)
+    def get_field(self, field_regex, parser):
+        # Use a capture group in field
+        # declarations e.g.
+        # r'name = (\d+)'
+        # This extracts the digit 
+        # part of the 'name' field.
+        # This is then parsed
+        matches = re.findall(f"\n{field_regex}\n", self.text)
 
         if len(matches) > 1:
             raise SyntaxError('Field assigned more than once')
