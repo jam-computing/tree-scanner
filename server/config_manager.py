@@ -4,7 +4,6 @@ class ConfigManager:
     def __init__(self, path):
         self.file = open(path)
         self.text = self.file.read()
-        print(repr(self.text))
 
     def get_field(self, field_regex, parser):
         # Use a capture group in field
