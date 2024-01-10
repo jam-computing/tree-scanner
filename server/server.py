@@ -15,18 +15,23 @@ config_manager = ConfigManager("config")
 
 def main():
     print("----- Scanner Server -----")
-    print("Reading in data from the config")
+    print("Reading in data from the config...")
 
     # Variables from the config
+    global ip, port, led_count, pin
     ip = config_manager.get_field("ip ?= ?(.+)", ip_address)
     port = config_manager.get_field('port ?= ?(\d+)', int)
     led_count = config_manager.get_field('led_count ?= ?(\d+)', int)
     pin = config_manager.get_field('pin ?= ?(.+)', parse_pin)
 
     print(f'IP: {ip}\nPort: {port}\nLed Count: {led_count}\nPin: {pin}')
+    print('Accessing leds...')
+
+    global led_manager
+    led_manager = LedManager(pin, led_count)
 
     # Start the server
-    print('Starting server')
+    print('Starting server...')
     asyncio.run(start_server(str(ip), port))
 
 
@@ -43,22 +48,16 @@ async def handle_request(websocket):
 
 
 async def handle_message(websocket, message):
-
-    print(f'Received message:\n{message}\n')
+    print(f'Received message: {message}')
 
     if message.isdigit():
         index = int(message)
         print("Wipe update at index : " + index)
-        # wipe_update(int(message))
+        led_manager.wipe_update(int(message))
         await websocket.send("Request processed")
-    elif message == "setup":
-        led_count = int(message[:11])
-        print(f"Setting up {led_count} leds")
-        # setup_ws281x(led_count)
-        await websocket.send("Setup complete")
     elif message == "data":
         print("Data request")
-        # websocket.send(f"Path: {path}, Port: {port}, Leds: {led_count}")
+        await websocket.send(f'IP: {ip} Port: {port} Led Count: {led_count} Pin: {pin}/')
     elif message == "ping":
         print("Ping request")
         await websocket.send("pong")
