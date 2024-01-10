@@ -20,18 +20,18 @@ def main():
     # Variables from the config
     global ip, port, led_count, pin
     ip = config_manager.get_field("ip ?= ?(.+)", ip_address)
-    port = config_manager.get_field('port ?= ?(\d+)', int)
-    led_count = config_manager.get_field('led_count ?= ?(\d+)', int)
-    pin = config_manager.get_field('pin ?= ?(.+)', parse_pin)
+    port = config_manager.get_field("port ?= ?(\d+)", int)
+    led_count = config_manager.get_field("led_count ?= ?(\d+)", int)
+    pin = config_manager.get_field("pin ?= ?(.+)", parse_pin)
 
-    print(f'IP: {ip}\nPort: {port}\nLed Count: {led_count}\nPin: {pin}')
-    print('Accessing leds...')
+    print(f"IP: {ip}\nPort: {port}\nLed Count: {led_count}\nPin: {pin}")
+    print("Accessing leds...")
 
     global led_manager
     led_manager = LedManager(pin, led_count)
 
     # Start the server
-    print('Starting server...')
+    print("Starting server...")
     asyncio.run(start_server(str(ip), port))
 
 
@@ -48,7 +48,7 @@ async def handle_request(websocket):
 
 
 async def handle_message(websocket, message):
-    print(f'Received message: {message}')
+    print(f"Received message: {message}")
 
     if message.isdigit():
         index = int(message)
@@ -57,7 +57,9 @@ async def handle_message(websocket, message):
         await websocket.send("Request processed")
     elif message == "data":
         print("Data request")
-        await websocket.send(f'IP: {ip} Port: {port} Led Count: {led_count} Pin: {pin}/')
+        await websocket.send(
+            f"IP: {ip} Port: {port} Led Count: {led_count} Pin: {pin}/"
+        )
     elif message == "ping":
         print("Ping request")
         await websocket.send("pong")
@@ -68,4 +70,3 @@ async def handle_message(websocket, message):
 
 if __name__ == "__main__":
     main()
-
