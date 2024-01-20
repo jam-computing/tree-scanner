@@ -5,12 +5,12 @@ from ipaddress import ip_address
 # import board
 # import neopixel
 
-from ..config_manager import ConfigManager
+from ..helpers.config_manager import ConfigManager
 from led_manager import LedManager
 from parsers import parse_pin
 
 # Path to config file is within the ConfigManager constructor
-config_manager = ConfigManager("config")
+config_manager = ConfigManager("server.config")
 
 
 def main():
