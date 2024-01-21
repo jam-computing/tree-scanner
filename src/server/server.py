@@ -6,11 +6,11 @@ from ipaddress import ip_address
 # import neopixel
 
 from ..helpers.config_manager import ConfigManager
-from led_manager import LedManager
+from ..helpers.led_manager import LedManager
 from parsers import parse_pin
 
 # Path to config file is within the ConfigManager constructor
-config_manager = ConfigManager("server.config")
+config_manager = ConfigManager("../server.config")
 
 
 def main():
@@ -54,7 +54,7 @@ async def handle_message(websocket, message):
         index = int(message)
         print("Wipe update at index : " + index)
         led_manager.wipe_update(int(message))
-        await websocket.send("Request processed")
+        await websocket.send("request processed")
     elif message == "data":
         print("Data request")
         await websocket.send(
@@ -65,7 +65,7 @@ async def handle_message(websocket, message):
         await websocket.send("pong")
     else:
         print("Bad request")
-        await websocket.send("Bad request")
+        await websocket.send("bad request")
 
 
 if __name__ == "__main__":

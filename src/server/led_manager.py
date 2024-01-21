@@ -1,10 +1,8 @@
 # import board
 # import neopixel
 import re
-from enum import auto, Enum
 
 class LedManager:
-    pass
     def __init__(self, board_pin, led_count):
         pass
 #        self.pixels = neopixel.NeoPixel(board_pin,
