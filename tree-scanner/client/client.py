@@ -1,7 +1,7 @@
 import asyncio
-from config_manager import ConfigManager
+from ..helpers.config_manager import ConfigManager
 from websockets.sync.client import connect
-# import cv2 as cv
+
 
 def main():
     print('----- Scanner Client -----')

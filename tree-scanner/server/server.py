@@ -5,8 +5,8 @@ from ipaddress import ip_address
 # import board
 # import neopixel
 
-from ..helpers.config_manager import ConfigManager
-from ..helpers.led_manager import LedManager
+from ...helpers.config_manager import ConfigManager
+from led_manager import LedManager
 from parsers import parse_pin
 
 # Path to config file is within the ConfigManager constructor
