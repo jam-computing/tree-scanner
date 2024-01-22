@@ -1,28 +1,21 @@
 import asyncio
+import tomllib
 from websockets.server import serve
 from ipaddress import ip_address
 
 # import board
 # import neopixel
 
-from ...helpers.config_manager import ConfigManager
 from led_manager import LedManager
 from parsers import parse_pin
 
-# Path to config file is within the ConfigManager constructor
-config_manager = ConfigManager("../server.config")
+
+path = "config/server.toml"
 
 
 def main():
     print("----- Scanner Server -----")
     print("Reading in data from the config...")
-
-    # Variables from the config
-    global ip, port, led_count, pin
-    ip = config_manager.get_field(r"ip ?= ?(.+)", ip_address)
-    port = config_manager.get_field(r"port ?= ?(\d+)", int)
-    led_count = config_manager.get_field(r"led_count ?= ?(\d+)", int)
-    pin = config_manager.get_field(r"pin ?= ?(.+)", parse_pin)
 
     print(f"IP: {ip}\nPort: {port}\nLed Count: {led_count}\nPin: {pin}")
     print("Accessing leds...")
@@ -33,6 +26,15 @@ def main():
     # Start the server
     print("Starting server...")
     asyncio.run(start_server(str(ip), port))
+
+def read_in():
+    with open(path, 'rb') as f:
+        data = tomllib.load(f)
+
+        global ip, port, led_count, pin
+        ip = data['ip']
+        print(ip)
+
 
 
 async def start_server(path, port):
