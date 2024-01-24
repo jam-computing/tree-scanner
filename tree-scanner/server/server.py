@@ -1,7 +1,7 @@
 import asyncio
 import tomllib
 from websockets.server import serve
-from ipaddress import ip_address
+import ipaddress
 
 # import board
 # import neopixel
@@ -10,12 +10,14 @@ from led_manager import LedManager
 from parsers import parse_pin
 
 
-path = "config/server.toml"
+path = "../configs/server.toml"
 
 
 def main():
     print("----- Scanner Server -----")
     print("Reading in data from the config...")
+
+    read_in()
 
     print(f"IP: {ip}\nPort: {port}\nLed Count: {led_count}\nPin: {pin}")
     print("Accessing leds...")
@@ -27,14 +29,16 @@ def main():
     print("Starting server...")
     asyncio.run(start_server(str(ip), port))
 
+
 def read_in():
-    with open(path, 'rb') as f:
-        data = tomllib.load(f)
+    with open(path, "rb") as file:
+        data = tomllib.load(file)
 
         global ip, port, led_count, pin
-        ip = data['ip']
-        print(ip)
-
+        ip = ipaddress.ip_address(data["ip"])
+        port = data["port"]
+        led_count = data["led_count"]
+        pin = parse_pin(data["pin"])
 
 
 async def start_server(path, port):
@@ -54,14 +58,14 @@ async def handle_message(websocket, message):
 
     if message.isdigit():
         index = int(message)
-        print("Wipe update at index : " + index)
+        print("Wipe update at index : " + str(index))
         led_manager.wipe_update(int(message))
         await websocket.send("request processed")
     elif message == "data":
         print("Data request")
         await websocket.send(
-            f"IP: {ip} Port: {port} Led Count: {led_count} Pin: {pin}/"
-        )
+                f"IP: {ip} Port: {port} Led Count: {led_count} Pin: {pin}"
+                )
     elif message == "ping":
         print("Ping request")
         await websocket.send("pong")

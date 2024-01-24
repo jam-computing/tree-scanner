@@ -1,7 +1,7 @@
 # Socket config
 port = 8765
-ip = 127.0.0.1
+ip = "127.0.0.1"
 
 # Hardware config
 led_count = 50
-pin = D18
+pin = "D18"
