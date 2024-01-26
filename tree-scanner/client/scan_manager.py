@@ -16,7 +16,6 @@ class Scanner:
 
         # Grayscale, blur then minmaxloc
         greyscale_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        cv.imshow('Greyed', greyscale_image)
         cv.waitKey(1000)
 
         blurs = 20
@@ -29,7 +28,8 @@ class Scanner:
 
         # Draw a circle on the brightest point and save the image for debugging
         image = cv.circle(image, max_loc, 20, (0, 225, 0), 7)
-        cv.imwrite("images/" + str(time.time()), image)
+
+        cv.imwrite(f"images/{str(time.time())}.png", image)
 
         # Add the normalised led location to the list
 

@@ -2,6 +2,7 @@ import asyncio
 import tomllib
 from websockets.server import serve
 import ipaddress
+import time
 
 # import board
 # import neopixel
@@ -32,6 +33,7 @@ def main():
 
 def read_in():
     with open(path, "rb") as file:
+        global config_string
         data = tomllib.load(file)
 
         global ip, port, led_count, pin
@@ -59,13 +61,12 @@ async def handle_message(websocket, message):
     if message.isdigit():
         index = int(message)
         print("Wipe update at index : " + str(index))
-        led_manager.wipe_update(int(message))
+        time.sleep(2000)
+        # led_manager.wipe_update(int(message))
         await websocket.send("request processed")
     elif message == "data":
         print("Data request")
-        await websocket.send(
-                f"IP: {ip} Port: {port} Led Count: {led_count} Pin: {pin}"
-                )
+        await websocket.send(str(led_count))
     elif message == "ping":
         print("Ping request")
         await websocket.send("pong")
