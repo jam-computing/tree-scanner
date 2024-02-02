@@ -27,12 +27,14 @@ async def main():
 
     websocket.send("data")
     led_count = int(websocket.recv())
-    print(f"The server has am led count of {str(led_count)}")
+    print(f"The server has a led count of {str(led_count)}")
 
+    # Wait for user input before starting the scan
     value = ""
-    while value != "y":
+    while value != "y" or value != "Y":
         value = input("Would you like to start the scan? [Y/n] ")
 
+    # Initialise the scanner
     scanner = scan_manager.Scanner()
 
     for i in range(led_count):
@@ -45,6 +47,8 @@ async def main():
 
         print(f"Taking photo of led {i}")
         scanner.scan_frame()
+
+    scanner.write_to_file()
 
 
 def read_in():
