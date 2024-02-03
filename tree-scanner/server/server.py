@@ -4,9 +4,6 @@ from websockets.server import serve
 import ipaddress
 import time
 
-# import board
-# import neopixel
-
 from led_manager import LedManager
 from parsers import parse_pin
 
@@ -62,7 +59,7 @@ async def handle_message(websocket, message):
         index = int(message)
         print("Wipe update at index : " + str(index))
         time.sleep(2000)
-        # led_manager.wipe_update(int(message))
+        led_manager.wipe_update(int(message))
         await websocket.send("request processed")
     elif message == "data":
         print("Data request")
